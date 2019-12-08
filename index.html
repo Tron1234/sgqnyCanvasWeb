@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+    <script type="text/javascript" src="js/jquery-3.4.0.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js'></script>
+    <script src="js/main.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="login">
+            <div class="login_box">
+                <img class="img_baby">
+                <div class="nav">
+                    <div class="content"></div>
+                    <div class="content"></div>
+                    <div class="content"></div>
+                </div>
+                <span id="right">→</span>
+            </div>
+        </div>
+        <div class="four_leaf_clover">
+            <audio id="player" src="music/bgm.mp3"></audio>
+            <i class="circle"></i>
+            <canvas id='myCanvas' width="400px" height="600px"
+                style="position: absolute;bottom: 2px;left: 35%;z-index: 2"></canvas>
+            <script>
+                var canvas = document.getElementById('myCanvas');
+                var ctx = canvas.getContext('2d');
+
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = 'transparent';
+
+                var grd = ctx.createLinearGradient(274, 500, 173, 160);
+                grd.addColorStop(0, "#3aa65e");
+                grd.addColorStop(1, "#26ae28");
+                ctx.fillStyle = grd;
+
+                var percent = 0;
+                var result = new Array();
+                var result1 = new Array();
+                var result2 = new Array();
+
+                function animate() {
+                    ctx.clearRect(0, 0, 400, 600);
+                    ctx.beginPath();
+
+                    result2 = drawCurvePath(
+                        ctx,
+                        [274, 600],
+                        [173, 160],
+                        -0.2,
+                        percent
+                    );
+
+                    result1 = drawCurvePath(
+                        ctx,
+                        [225, 600],
+                        [170, 160],
+                        -0.2,
+                        percent
+                    );
+                    result[percent * 2] = [result1[0], result1[1], result2[0] - result1[0], result2[1] - result1[1]];
+                    for (var i = 0; i < result.length; i++) {
+                        ctx.fillRect(result[i][0], result[i][1], result[i][2], result[i][3]);
+                    }
+
+                    ctx.stroke();
+
+                    percent = (percent + 0.5) % 100;
+
+                    if (percent != 0) {
+                        requestAnimationFrame(animate);
+                    }
+                }
+                $("#right").click(function () {
+                    var player = $("#player")[0];
+                    setTimeout(function () {
+                        animate();
+                        player.play();
+                    }, 8600);
+                })
+
+                function drawCurvePath(ctx, start, end, curveness, percent) {
+                    var result;
+                    var cp = [
+                        (start[0] + end[0]) / 2 - (start[1] - end[1]) * curveness,
+                        (start[1] + end[1]) / 2 - (end[0] - start[0]) * curveness
+                    ];
+
+                    var t = percent / 100;
+
+                    var p0 = start;
+                    var p1 = cp;
+                    var p2 = end;
+
+                    var v01 = [p1[0] - p0[0], p1[1] - p0[1]]; // 向量<p0, p1>
+                    var v12 = [p2[0] - p1[0], p2[1] - p1[1]]; // 向量<p1, p2>
+
+                    var q0 = [p0[0] + v01[0] * t, p0[1] + v01[1] * t];
+                    var q1 = [p1[0] + v12[0] * t, p1[1] + v12[1] * t];
+
+                    var v = [q1[0] - q0[0], q1[1] - q0[1]]; // 向量<q0, q1>
+
+                    var b = [q0[0] + v[0] * t, q0[1] + v[1] * t];
+
+                    ctx.moveTo(p0[0], p0[1]);
+
+                    ctx.quadraticCurveTo(
+                        q0[0], q0[1],
+                        b[0], b[1]
+                    );
+                    return [b[0], b[1]];
+                }
+            </script>
+            <a id="a1" href="#">
+                <div id="a1_div1" class="a1"></div>
+            </a>
+            <a id="a2" href="#">
+                <div id="a2_div1">
+                    <div id="a2_div2" class="a2"></div>
+                </div>
+            </a>
+            <a id="a3" href="#">
+                <div id="a3_div1">
+                    <div id="a3_div2" class="a3"></div>
+                </div>
+            </a>
+            <a id="a4" href="#">
+                <div id="a4_div1">
+                    <div id="a4_div2" class="a4"></div>
+                </div>
+            </a>
+
+            <div class="heart1_top">
+                <div class="heart heart1">
+                    <div>
+                        <canvas id="canvas1"></canvas>
+                    </div>
+                </div>
+            </div>
+            <ul class="waterWave waterWave1">
+                <li><span class="ripple"></span></li>
+            </ul>
+
+            <div class="heart2_top">
+                <div class="heart heart2">
+                    <div>
+                        <canvas id="canvas2"></canvas>
+                    </div>
+                </div>
+            </div>
+            <ul class="waterWave waterWave2">
+                <li><span class="ripple"></span></li>
+            </ul>
+
+            <div class="heart3_top">
+                <div class="heart heart3">
+                    <div>
+                        <canvas id="canvas3"></canvas>
+                    </div>
+                </div>
+            </div>
+            <ul class="waterWave waterWave3">
+                <li><span class="ripple"></span></li>
+            </ul>
+            <div class="heart4_top">
+                <div class="heart heart4">
+                    <div>
+                        <canvas id="canvas4"></canvas>
+                    </div>
+                </div>
+            </div>
+            <ul class="waterWave waterWave4">
+                <li><span class="ripple"></span></li>
+            </ul>
+
+            <div class="heart_pink1">
+                <canvas id="canvas_pink1"></canvas>
+                <div class="heart_content1">
+                    <div class="heart_content1_left">
+                        <img src="images/pink1_1.jpg" width="130" height="130">
+                        <p style="text-indent:2em;margin: 10px 0;color: #2F0000;">
+                            夏至未至，清晨的微风把我吹上飞往惠州的航班，今天要和自己素未谋面的小猪猪见面，心里既激动又紧张。我鼓起勇气牵起她的手，她害羞的缩了回去，脸上泛起红晕。之后小猪猪成了我的女朋友。
+                        </p>
+                    </div>
+                    <div class="heart_content1_right">
+                        <div>
+                            <img src="images/pink1_2.jpg" width="100" height="100">
+                            <h3>第一次吃面</h3>
+                        </div>
+                        <div>
+                            <img src="images/pink1_3.jpg" width="100" height="100">
+                            <h3>第一次吃火锅</h3>
+                        </div>
+                        <div>
+                            <img src="images/pink1_4.jpg" width="100" height="100">
+                            <h3>第一次喝早茶</h3>
+                        </div>
+                    </div>
+                </div>
+                <a class="back1">返&nbsp;回</a>
+            </div>
+            <div class="heart_pink2">
+                <canvas id="canvas_pink2"></canvas>
+                <div class="heart_content2">
+                    <div class="banner" id="b04">
+                        <ul>
+                            <li class="slider-item"><img src="images/pink2_1.jpg" width="353" height="353"></li>
+                            <li class="slider-item"><img src="images/pink2_2.jpg" width="353" height="353"></li>
+                            <li class="slider-item"><img src="images/pink2_3.jpg" width="353" height="353"></li>
+                            <li class="slider-item"><img src="images/pink2_4.jpg" width="353" height="353"></li>
+                            <li class="slider-item"><img src="images/pink2_5.jpg" width="353" height="353"></li>
+                            <li class="slider-item"><img src="images/pink2_6.jpg" width="353" height="353"></li>
+                        </ul>
+                        <a href="javascript:void(0);" class="unslider-arrow04 prev"><img class="arrow" id="al"
+                                src="images/arrowl.png" alt="prev" width="20" height="35"></a>
+                        <a href="javascript:void(0);" class="unslider-arrow04 next"><img class="arrow" id="ar"
+                                src="images/arrowr.png" alt="next" width="20" height="37"></a>
+                    </div>
+                    <script src="js/unslider.min.js"></script>
+                    <script>
+                        $(document).ready(function (e) {
+                            var progress = $(".progress"),
+                                li_width = $("#b04 li").length;
+                            var unslider04 = $('#b04').unslider({
+                                    dots: true,
+                                    complete: function (index) { //自己添加的，官方没有
+                                        progress.animate({
+                                            "width": (100 / li_width) * (index + 1) + "%"
+                                        });
+                                    }
+                                }),
+
+                                data04 = unslider04.data('unslider');
+                            $('.unslider-arrow04').click(function () {
+                                var fn = this.className.split(' ')[1];
+                                data04[fn]();
+                            });
+                        });
+                    </script>
+                </div>
+                <a class="back2">返&nbsp;回</a>
+            </div>
+            <div class="heart_pink3">
+                <canvas id="canvas_pink3"></canvas>
+                <div class="heart_content3">
+                    <h1>留言</h1>
+                    <div>
+                        <div>
+                            <p>不管多困难<br />扬起声音，不要逃避<br />即使没那么强大<br />也会一步步踏出去</p>
+                            <span style="display:inline-block;margin-top:5px;margin-left:200px;">--2019/4/11
+                                18:00</span>
+                        </div>
+                        <div>
+                            <p>宝贝在去年的今天遇见你真好😊,感觉自己时这个世界上最幸福的男孩子</p>
+                            <span style="display:inline-block;margin-top:5px;margin-left: 210px;">--2019/4/3
+                                20:58</span>
+                        </div>
+                        <div>
+                            <p>超大猪猪宝贝正在考试，我相信他没问题的。想和超大猪猪宝贝过一辈子</p>
+                            <p style="font-size: 15px;margin-top:10px"><span
+                                    style="color:rgb(112, 120, 128)">老王:</span>猪猪宝贝一辈子不够的，我第一次亲你的时候很熟悉的感觉</p>
+                            <span style="display:inline-block;margin-top:5px;margin-left: 210px;">--2019/4/1
+                                13:05</span>
+                        </div>
+                        <div>
+                            <p>愿我们手挽手，一起接受世界的赞美</p>
+                            <p style="font-size: 15px;margin-top:10px"><span
+                                    style="color:rgb(112, 120, 128)">老王:</span>愿我们手牵手，共同见证奇迹的诞生</p>
+                            <span style="display:inline-block;margin-top:10px;margin-left: 200px;">--2019/3/18
+                                18:53</span>
+                        </div>
+                    </div>
+                </div>
+                <a class="back3">返&nbsp;回</a>
+            </div>
+            <div class="heart_pink4">
+                <canvas id="canvas_pink4"></canvas>
+                <div class="heart_content4">
+                    <div style="float:left;clear:both;margin-right: 20px;margin-top:15px;margin-bottom: 10px;" align="center">
+                        <img src="images/pink4.jpg" hspace="8" width="200" height="250">
+                        <h2>2019.4.19</h2>
+                    </div>
+                    <p style="text-indent:2em;line-height: 25px;font-family: 'zzFont';margin-top: 15px;">
+                        今天是我们相恋一周年的日子，这一年里我们去过深圳看过我最想看的华强北的技术，吃过最想吃的麻辣香锅，在惠州吃遍大街小巷，到武汉参观黄鹤楼，在清晨的大雪中买鲍师傅，去长沙吃臭豆腐，在旧屋中品尝你在广东最想吃的正宗馄饨。<br/><br/><br/><br/><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;这一路我们走走停停，只有吃无法停止的，把宝贝养成了我的小猪猪，我会一直疼爱你，带你去吃所有你想吃的，愿今后每年的今天，我们都在一起。</span>
+                    </p>
+                </div>
+                <a class="back4">返&nbsp;回</a>
+            </div>
+            <script type="text/javascript">
+                window.onload = function () {
+                    var canvas1 = document.getElementById("canvas1");
+                    draw(canvas1, true);
+                    var canvas2 = document.getElementById("canvas2");
+                    draw(canvas2, true);
+                    var canvas3 = document.getElementById("canvas3");
+                    draw(canvas3, true);
+                    var canvas4 = document.getElementById("canvas4");
+                    draw(canvas4, true);
+                    var canvas_pink1 = document.getElementById("canvas_pink1");
+                    draw(canvas_pink1, false);
+                    var canvas_pink2 = document.getElementById("canvas_pink2");
+                    draw(canvas_pink2, false);
+                    var canvas_pink3 = document.getElementById("canvas_pink3");
+                    draw(canvas_pink3, false);
+                    var canvas_pink4 = document.getElementById("canvas_pink4");
+                    draw(canvas_pink4, false);
+
+                    var grd;
+                    var sum = 0;
+                    var charStatus = new Array();
+
+                    function draw(canvas, temp) {
+                        var ctx = canvas.getContext('2d');
+                        canvas.width = 613;
+                        canvas.height = 575;
+                        ctx.translate(306.5, 287.5);
+                        ctx.scale(3.4, 3.4);
+                        ctx.beginPath();
+                        var r = 0,
+                            a = 20,
+                            start = 0,
+                            end = 0;
+                        ctx.rotate(Math.PI);
+                        for (var q = 0; q < 1000; q++) {
+                            start += Math.PI * 2 / 1000;
+                            end = start + Math.PI * 2 / 1000;
+                            r = a * Math.sqrt(225 / (17 - 16 * Math.sin(start) * Math.sqrt(Math.cos(start) * Math
+                                .cos(start))))
+                            ctx.arc(0, 0, r, start, end, false);
+                        }
+                        ctx.strokeStyle = "transparent";
+                        ctx.stroke();
+                        if (temp) {
+                            water();
+                        } else {
+                            pink();
+                        }
+                        ctx.fillStyle = grd;
+
+                        ctx.shadowColor = "gray";
+                        ctx.shadowOffsetX = 5;
+                        ctx.shadowOffsetY = 5;
+                        ctx.shadowBlur = 5;
+                        ctx.fill();
+                    }
+
+                    function water() {
+                        grd = ctx.createRadialGradient(0, 140, 10, 60, 60, 120);
+                        grd.addColorStop(1, "white");
+                        grd.addColorStop(0, "#C4DFF9");
+                    }
+
+                    function pink() {
+                        grd = ctx.createRadialGradient(0, 20, 120, 0, 20, 10);
+                        grd.addColorStop(0, "white");
+                        grd.addColorStop(0.5, "#F9B7E3");
+                        grd.addColorStop(1, "#F255AF");
+                    }
+
+                    $("#a1").click(function () {
+                        $(".heart1").css("display", "block");
+                        $(".heart1_top").addClass("heart1_animation_show");
+                        $(".waterWave1").css("display", "block");
+                        setTimeout(function () {
+                            $(".heart1").css("display", "none");
+                            $(".heart1_top").removeClass("heart1_animation_show");
+                            $(".heart_pink1").addClass("heart_pink_show");
+                        }, 2000);
+                    })
+                    $("#a2").click(function () {
+                        $(".heart2").css("display", "block");
+                        $(".heart2_top").addClass("heart2_animation_show");
+                        $(".waterWave2").css("display", "block");
+                        setTimeout(function () {
+                            $(".heart2").css("display", "none");
+                            $(".heart2_top").removeClass("heart2_animation_show");
+                            $(".heart_pink2").addClass("heart_pink_show");
+                        }, 2000);
+                    })
+                    $("#a3").click(function () {
+                        $(".heart3").css("display", "block");
+                        $(".heart3_top").addClass("heart3_animation_show");
+                        $(".waterWave3").css("display", "block");
+                        setTimeout(function () {
+                            $(".heart3").css("display", "none");
+                            $(".heart3_top").removeClass("heart3_animation_show");
+                            $(".heart_pink3").addClass("heart_pink_show");
+                        }, 2000);
+                    })
+                    $("#a4").click(function () {
+                        $(".heart4").css("display", "block");
+                        $(".heart4_top").addClass("heart4_animation_show");
+                        $(".waterWave4").css("display", "block");
+                        setTimeout(function () {
+                            $(".heart4").css("display", "none");
+                            $(".heart4_top").removeClass("heart4_animation_show");
+                            $(".heart_pink4").addClass("heart_pink_show");
+                        }, 2000);
+                    })
+                    $(".back1").click(function () {
+                        $(".heart_pink1").addClass("back_transform");
+                        setTimeout(function () {
+                            $(".heart_pink1").removeClass("heart_pink_show");
+                            $(".heart_pink1").removeClass("back_transform");
+                            $(".waterWave1").css("display", "none");
+                        }, 3000);
+                        if ($.inArray('a', charStatus) == -1) {
+                            sum++;
+                            /* console.log(sum); */
+                        }
+                        charStatus.push('a');
+                        next_show();
+                    })
+                    $(".back2").click(function () {
+                        $(".heart_pink2").addClass("back_transform");
+                        setTimeout(function () {
+                            $(".heart_pink2").removeClass("heart_pink_show");
+                            $(".heart_pink2").removeClass("back_transform");
+                            $(".waterWave2").css("display", "none");
+                        }, 3000);
+                        if ($.inArray('b', charStatus) == -1) {
+                            sum++;
+                            /*  console.log(sum); */
+                        }
+                        charStatus.push('b');
+                        next_show();
+                    })
+                    $(".back3").click(function () {
+                        $(".heart_pink3").addClass("back_transform");
+                        setTimeout(function () {
+                            $(".heart_pink3").removeClass("heart_pink_show");
+                            $(".heart_pink3").removeClass("back_transform");
+                            $(".waterWave3").css("display", "none");
+                        }, 3000);
+                        if ($.inArray('c', charStatus) == -1) {
+                            sum++;
+                            /* console.log(sum); */
+                        }
+                        charStatus.push('c');
+                        next_show();
+                    })
+                    $(".back4").click(function () {
+                        $(".heart_pink4").addClass("back_transform");
+                        setTimeout(function () {
+                            $(".heart_pink4").removeClass("heart_pink_show");
+                            $(".heart_pink4").removeClass("back_transform");
+                            $(".waterWave4").css("display", "none");
+                        }, 3000);
+                        if ($.inArray('d', charStatus) == -1) {
+                            sum++;
+                            /* console.log(sum); */
+                        }
+                        charStatus.push('d');
+                        next_show();
+                    })
+
+                    function next_show() {
+                        if (sum == 4) {
+                            $("#next").css("display", "block");
+                            $(".next_div").addClass("next_slide");
+                        }
+                    }
+                    $("#next").click(function () {
+                        init();
+                        $(".jj").css("opacity", "0");
+                        $(".hz").css("animation", "station 17s linear");
+                        $(".hz").css("animation-fill-mode", "forwards");
+                        setTimeout(function () {
+                            $(".heartbeat1").css("opacity", "0.8");
+                            $(".heartbeat2").css("opacity", "0.8");
+                            $("#canvas5").css("opacity", "1");
+                            $("#cvs").css("display", "none");
+                            startTime();
+                            $('.fire').fireworks({
+                                sound: false, // sound effect
+                                opacity: 0.4,
+                                width: '100%',
+                                height: '100%'
+                            });
+                        }, 16300);
+                        $("#code").typewriter();
+                    })
+                }
+            </script>
+            <div class="poem">
+                <div class="animate three">
+                    <span>为</span><span>我</span><span>衔</span><span>素</span><span>书</span><br>
+                    <span>了</span><span>心</span><span>悟</span><span>有</span><span>物</span><br>
+                    <span>遇</span><span>午</span><span>归</span><span>闲</span><span>处</span><br>
+                    <span>见</span><span>面</span><span>且</span><span>欢</span><span>娱</span><br>
+                    <span>你</span><span>攒</span><span>入</span><span>云</span><span>树</span><br>
+                </div>
+            </div>
+            <div class="next_div"><input id="next" type="button" value="next"></div>
+        </div>
+
+        <div class="family aurora" data-aurora="northern">
+            <svg></svg>
+            <em class="jj"></em>
+            <em class="hz"></em>
+            <div class="heartbeat1"></div>
+            <div class="heartbeat2"></div>
+            <canvas id="cvs"></canvas>
+            <div id="code">
+                我希望有个如你一般的人<br /><br />
+                如山间清爽的风<br /><br />
+                如古城温暖的光<br /><br />
+                从清晨到夜晚<br /><br />
+                由山野到书房<br /><br />
+                只要最后是你<br /><br />
+                就好
+            </div>
+            <div class="fire"></div>
+            <script type="text/javascript" src="js/jquery.fireworks.js"></script>
+
+            <script src="js/typewriter.js"></script>
+            <canvas id="canvas5"
+                style="position: absolute;top:100px;right:80px;opacity: 0;transition: 2s opacity linear"></canvas>
+            <script src="js/digit.js"></script>
+            <script src="js/countdown.js"></script>
+            <canvas id="grassland" style="position:absolute;bottom:0;right:0;"></canvas>
+            <script src="js/grasslandJS.js"></script>
+        </div>
+    </div>
+</body>
+
+</html>
